@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'LocalCache_Example' do
+  pod 'LocalCache', :path => '../'
+
+  target 'LocalCache_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
