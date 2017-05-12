@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import HFUtility
 import TinyLog
 
 open class LocalCache {
@@ -31,8 +30,12 @@ open class LocalCache {
         if let cacheExtension = cacheExtension {
             localCacheExtension = cacheExtension
         }
-        if let mainPath = HFPath.pathByAppendingPathComponent(HFPath.pathForLibrary(), component: diskCacheParentFolder) {
-            if !HFPath.isPathExists(mainPath) {
+        
+        if let libraryPath = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first {
+            
+            let mainPath = NSString(string: libraryPath).appendingPathComponent(diskCacheParentFolder)
+            
+            if !FileManager.default.fileExists(atPath: mainPath) {
                 do {
                     try FileManager.default.createDirectory(atPath: mainPath, withIntermediateDirectories: true, attributes: nil)
                 } catch {
@@ -50,23 +53,15 @@ open class LocalCache {
             loge("Critical error while replacing percent encoding!")
             return nil
         }
-        guard let filePath = HFPath.pathByAppendingPathComponent(path, component: "\(fileName).\(ext ?? localCacheExtension)") else {
-            loge("Failed to retrieve file path using identifier: \(identifier)")
-            return nil
-        }
-        return filePath
+        return NSString(string: path).appendingPathComponent("\(fileName).\(ext ?? localCacheExtension)")
     }
     
     open func fileURL(forIdentifier identifier: String, ext: String? = nil) -> URL? {
-        guard let fileName = identifier.removingPercentEncoding else {
-            loge("Critical error while replacing percent encoding!")
+        if let filePath = filePath(forIdentifier: identifier, ext: ext) {
+            return URL(fileURLWithPath: filePath)
+        } else {
             return nil
         }
-        guard let filePath = HFPath.pathByAppendingPathComponent(path, component: "\(fileName).\(ext ?? localCacheExtension)") else {
-            loge("Failed to retrieve file path using identifier: \(identifier)")
-            return nil
-        }
-        return URL(fileURLWithPath: filePath)
     }
     
     open func cachedFileList() -> [String] {
@@ -111,7 +106,7 @@ extension LocalCache {
                 callInMain(false, nil)
                 return
             }
-            if HFPath.isPathExists(filePath) {
+            if FileManager.default.fileExists(atPath: filePath) {
                 do {
                     try FileManager.default.removeItem(atPath: filePath)
                 } catch {
@@ -126,11 +121,9 @@ extension LocalCache {
         if sync {
             addTask()
         } else {
-            HFAsync.invokeAsync(
-                worker: {
-                    addTask()
+            DispatchQueue.global(qos: .userInitiated).async {
+                addTask()
             }
-            )
         }
     }
     
@@ -159,7 +152,7 @@ extension LocalCache {
                 callInMain(nil)
                 return
             }
-            if HFPath.isPathExists(filePath) {
+            if FileManager.default.fileExists(atPath: filePath) {
                 callInMain(FileManager.default.contents(atPath: filePath))
             } else {
                 callInMain(nil)
@@ -169,11 +162,9 @@ extension LocalCache {
         if sync {
             fetchTask()
         } else {
-            HFAsync.invokeAsync(
-                worker: {
-                    fetchTask()
+            DispatchQueue.global(qos: .userInitiated).async {
+                fetchTask()
             }
-            )
         }
     }
 }

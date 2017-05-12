@@ -1,0 +1,19 @@
+PODS:
+  - LocalCache (1.0.0):
+    - TinyLog
+  - TinyLog (1.0.1)
+
+DEPENDENCIES:
+  - LocalCache (from `../`)
+
+EXTERNAL SOURCES:
+  LocalCache:
+    :path: ../
+
+SPEC CHECKSUMS:
+  LocalCache: 09600e9583f9a9a4b8fa5e835b3bda88bd735a63
+  TinyLog: 6c3ecbc348d10dc242ebb506f684fc9ae6aff533
+
+PODFILE CHECKSUM: 591f5f1f564a6962b8393c8e7f30dc587d8b8140
+
+COCOAPODS: 1.2.1
