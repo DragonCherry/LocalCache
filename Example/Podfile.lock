@@ -1,11 +1,6 @@
 PODS:
-  - HFUtility (2.0.13):
-    - SwiftKeychainWrapper
-    - TinyLog
   - LocalCache (1.0.0):
-    - HFUtility
     - TinyLog
-  - SwiftKeychainWrapper (3.0.1)
   - TinyLog (1.0.1)
 
 DEPENDENCIES:
@@ -16,9 +11,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  HFUtility: 3611dc6b3d0d384322a8285c6f39455ec8126fc4
-  LocalCache: 153e8b4941f65f02df406e105e9d2d437b51cf54
-  SwiftKeychainWrapper: 38952a3636320ae61bad3513cadd870929de7a4a
+  LocalCache: 09600e9583f9a9a4b8fa5e835b3bda88bd735a63
   TinyLog: 6c3ecbc348d10dc242ebb506f684fc9ae6aff533
 
 PODFILE CHECKSUM: 591f5f1f564a6962b8393c8e7f30dc587d8b8140
